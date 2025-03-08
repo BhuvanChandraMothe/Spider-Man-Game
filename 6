@@ -24,3 +24,38 @@ class File():
 # Example Usage
 fs = File(".")  # Assuming the current directory
 print(fs.getMaxSize(2))  # Returns the two largest files
+
+
+import os
+
+class File:
+    def __init__(self, directory):
+        self.directory = directory
+
+    def getMaxSizeFile(self, n):
+        files = [(f, os.path.getsize(os.path.join(self.directory, f))) 
+                 for f in os.listdir(self.directory) if os.path.isfile(os.path.join(self.directory, f))]
+        files.sort(key=lambda x: x[1], reverse=True)  # Sort by size (descending)
+        return [f[0] for f in files[:n]]
+
+# Testing
+fs = File(".")
+print(fs.getMaxSizeFile(2))  # Prints the two largest files
+
+
+import datetime
+
+class File:
+    def __init__(self, directory):
+        self.directory = directory
+
+    def getLatestFiles(self, date):
+        files = [(f, os.path.getmtime(os.path.join(self.directory, f))) 
+                 for f in os.listdir(self.directory) if os.path.isfile(os.path.join(self.directory, f))]
+        date_timestamp = datetime.datetime(date.year, date.month, date.day).timestamp()
+        latest_files = [f[0] for f in files if f[1] > date_timestamp]
+        return latest_files
+
+# Testing
+fs = File(".")
+print(fs.getLatestFiles(datetime.date(2018,2,1)))  # Files modified after Feb 1, 2018
