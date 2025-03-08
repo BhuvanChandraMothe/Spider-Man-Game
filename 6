@@ -1,0 +1,26 @@
+import os
+
+class File():
+    def __init__(self, path):
+        self.path = str(path)
+
+    def getMaxSize(self, index):
+        largest_files = []
+        max_size = 0
+
+        for dirpath, dirnames, files in os.walk(self.path):
+            for file in files:
+                file_path = os.path.join(dirpath, file)
+                file_size = os.path.getsize(file_path)
+
+                if file_size > max_size:
+                    max_size = file_size
+                    largest_files.append(file)
+
+        # Sort by size in descending order
+        largest_files = sorted(largest_files, key=lambda x: os.path.getsize(os.path.join(self.path, x)), reverse=True)
+        return largest_files[:index]
+
+# Example Usage
+fs = File(".")  # Assuming the current directory
+print(fs.getMaxSize(2))  # Returns the two largest files
